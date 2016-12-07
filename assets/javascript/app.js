@@ -38,7 +38,45 @@ var tRemainder = "";
 var tMinutesTillTrain = "";
 // Next Train
 var nextTrainTime = "";
+var displayTime = function () {
+    $('tbody').empty();
+    database.ref().on("child_added", function (childSnapshot) {
+        // First Time (pushed back 1 year to make sure it comes before current time)
+        var firstTimeConverted = moment(childSnapshot.val().firstTrainTime, "hh:mm").subtract(1, "years");
+        // console.log(firstTimeConverted);
+        // Current Time
+        var currentTime = moment();
+        // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+        // Difference between the times
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+        // console.log("DIFFERENCE IN TIME: " + diffTime);
+        // Time apart (remainder)
+        var tRemainder = diffTime % childSnapshot.val().frequency;
+        // console.log("TIME APART: " + tRemainder);
+        // Minute Until Train
+        var tMinutesTillTrain = childSnapshot.val().frequency - tRemainder;
+        // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+        // Next Train
+        var nextTrainTime = moment().add(tMinutesTillTrain, "minutes").format("HH:mm");
+        // console.log("ARRIVAL TIME: " + moment(nextTrainTime).format("HH:mm"));
+        var tableRow = $('<tr>');
+        var nameCell = $('<td>').text(childSnapshot.val().name);
+        var destinationCell = $('<td>').text(childSnapshot.val().destination);
+        var frequencyCell = $('<td>').text(childSnapshot.val().frequency);
+        var firstTrainTimeCell = $('<td>').text(childSnapshot.val().firstTrainTime);
+        var nextTrainTimeCell = $('<td>').text(nextTrainTime);
+        var tMinutesTillTrainCell = $('<td>').text(tMinutesTillTrain);
+        tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell);
+        $('tbody').append(tableRow);
+    });
+};
 $(document).on('ready', function () {
+    displayTime();
+    // displayTime();
+    //     setInterval(function () {
+    //         $('tbody').empty(), 5000
+    //     });
+    setInterval(displayTime, 5000);
     $('#submit').on('click', function () {
         if ($('.form-horizontal').get(0).checkValidity()) {
             console.log('valid');
@@ -66,44 +104,5 @@ $(document).on('ready', function () {
             return false;
         }
     });
-
-    function repeatMe() {
-        database.ref().on("child_added", function (childSnapshot) {
-            // First Time (pushed back 1 year to make sure it comes before current time)
-            var firstTimeConverted = moment(childSnapshot.val().firstTrainTime, "hh:mm").subtract(1, "years");
-            // console.log(firstTimeConverted);
-            // Current Time
-            var currentTime = moment();
-            // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-            // Difference between the times
-            var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-            // console.log("DIFFERENCE IN TIME: " + diffTime);
-            // Time apart (remainder)
-            var tRemainder = diffTime % childSnapshot.val().frequency;
-            // console.log("TIME APART: " + tRemainder);
-            // Minute Until Train
-            var tMinutesTillTrain = childSnapshot.val().frequency - tRemainder;
-            // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-            // Next Train
-            var nextTrainTime = moment().add(tMinutesTillTrain, "minutes").format("HH:mm");
-            // console.log("ARRIVAL TIME: " + moment(nextTrainTime).format("HH:mm"));
-            var tableRow = $('<tr>');
-            var nameCell = $('<td>').text(childSnapshot.val().name);
-            var destinationCell = $('<td>').text(childSnapshot.val().destination);
-            var frequencyCell = $('<td>').text(childSnapshot.val().frequency);
-            var firstTrainTimeCell = $('<td>').text(childSnapshot.val().firstTrainTime);
-            var nextTrainTimeCell = $('<td>').text(nextTrainTime);
-            var tMinutesTillTrainCell = $('<td>').text(tMinutesTillTrain);
-            tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell);
-            $('tbody').append(tableRow);
-            setInterval(function () {
-                // $('<td>').text(nextTrainTime).update();
-                tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell);
-                $('tbody').append(tableRow);
-                // $('.all-info').load(database);
-            }, 60000);
-        });
-    }
-    repeatMe();
-    // setInterval(repeatMe, 10000);
 });
+// setInterval(repeatMe, 10000);
