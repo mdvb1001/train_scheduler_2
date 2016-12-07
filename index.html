@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Train Scheduler</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js" integrity="sha256-cPV18mnKeXm349/LJ+fcY51Ts2ygt+cWpZCzc3YzEus=" crossorigin="anonymous"></script>
+  <script src="assets/javascript/app.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="jumbotron main-title">
+        <h1>Train Scheduler</h1>
+        <p class="text-lead">Pick a train. Any train.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel all-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Current Trains</h3>
+        </div>
+        <div class="panel-body table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>Frequency (min)</th>
+                <th>First Train Time</th>
+                <th>Next Arrival</th>
+                <th>Minutes Away</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel all-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Add Train</h3>
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal">
+            <fieldset>
+              <legend>Add Train</legend>
+              <div class="form-group">
+                <label for="inputName" class="col-lg-2 control-label">Train Name</label>
+                <div class="col-lg-10">
+                  <input type="text" class="form-control" id="inputName" placeholder="Name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputDestination" class="col-lg-2 control-label">Destination</label>
+                <div class="col-lg-10">
+                  <input type="text" class="form-control" id="inputDestination" placeholder="Destination">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputFirstTime" class="col-lg-2 control-label">First Train Time (HH:mm)</label>
+                <div class="col-lg-10">
+                  <!-- <input type="time" class="form-control" id="inputFirstTime" placeholder="First Time"> -->
+                  <input type="number" min="0" max="23" class="form-control military" id="inputHour" required placeholder="hh"><b> :</b>
+                  <input type="number" min="0" max="59" class="form-control military" id="inputMinute" required placeholder="mm">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputFrequency" class="col-lg-2 control-label">Frequency (min)</label>
+                <div class="col-lg-10">
+                  <input type="number" class="form-control" id="inputFrequency" placeholder="Frequency">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                  <button id="submit" type="submit" class="btn btn-default">Submit</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

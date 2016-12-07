@@ -1,0 +1,52 @@
+body {
+    background-image: url("../images/map-of-ny.jpg");
+    /*font-family: 'Bungee', cursive;*/
+    font-family: 'Aref Ruqaa', serif;
+}
+
+.main-title {
+    padding: 20px;
+    background: rgba(229, 229, 229, 0.80);
+    color: black;
+    /*font-family: 'Bungee', cursive;*/
+    /*background-image: url("../images/memphis-rail.jpg");*/
+    /*background-image: url("../images/orientExpress.jpg");*/
+}
+
+.text-lead {
+    font-weight: bold;
+}
+
+#inputHour {
+    width: 65px;
+}
+
+#inputMinute {
+    width: 65px;
+}
+
+.military {
+    display: inline;
+}
+
+#inputName {
+    width: 100%;
+}
+
+#inputDestination {
+    width: 100%;
+}
+
+#inputFrequency {
+    width: 100%;
+}
+
+.all-info {}
+
+.all-inputs {
+    width: 50%;
+}
+
+.panel-heading {
+    background: rgba(10, 10, 70, .55);
+}
