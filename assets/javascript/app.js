@@ -38,9 +38,16 @@ var tRemainder = "";
 var tMinutesTillTrain = "";
 // Next Train
 var nextTrainTime = "";
+var todoCount = 0;
+var childKey = "";
+
 var displayTime = function () {
     $('tbody').empty();
     database.ref().on("child_added", function (childSnapshot) {
+        
+        var child = childSnapshot.val();
+        childKey = Object.keys(child);
+
         // First Time (pushed back 1 year to make sure it comes before current time)
         var firstTimeConverted = moment(childSnapshot.val().firstTrainTime, "hh:mm").subtract(1, "years");
         // console.log(firstTimeConverted);
@@ -59,15 +66,26 @@ var displayTime = function () {
         // Next Train
         var nextTrainTime = moment().add(tMinutesTillTrain, "minutes").format("HH:mm");
         // console.log("ARRIVAL TIME: " + moment(nextTrainTime).format("HH:mm"));
-        var tableRow = $('<tr>');
+        var tableRow = $('<tr>').attr('id', todoCount).attr('data-key', childKey);
         var nameCell = $('<td>').text(childSnapshot.val().name);
         var destinationCell = $('<td>').text(childSnapshot.val().destination);
         var frequencyCell = $('<td>').text(childSnapshot.val().frequency);
         var firstTrainTimeCell = $('<td>').text(childSnapshot.val().firstTrainTime);
         var nextTrainTimeCell = $('<td>').text(nextTrainTime);
         var tMinutesTillTrainCell = $('<td>').text(tMinutesTillTrain);
-        tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell);
+        var todoClose = $("<button>");
+        todoClose.attr("data-todo", todoCount);
+        todoClose.attr("data-key", childKey);
+        todoClose.addClass("checkbox");
+        todoClose.append("X");
+        // Append the button to the todoitem
+        // Add the button and todo item to the todos div
+        // Add to the todoCount
+        todoCount++;
+        tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell).append(todoClose);
         $('tbody').append(tableRow);
+        // Prevent Form from Refreshing (return false)
+        return false;
     });
 };
 $(document).on('ready', function () {
@@ -76,7 +94,7 @@ $(document).on('ready', function () {
     //     setInterval(function () {
     //         $('tbody').empty(), 5000
     //     });
-    setInterval(displayTime, 5000);
+    setInterval(displayTime, 60000);
     $('#submit').on('click', function () {
         if ($('.form-horizontal').get(0).checkValidity()) {
             console.log('valid');
@@ -101,8 +119,17 @@ $(document).on('ready', function () {
             $('#inputHour').val('');
             $('#inputMinute').val('');
             $('#inputFrequency').val('');
-            return false;
         }
+    });
+    console.log('check');
+    $(document).on('click', '.checkbox', function () {
+        console.log('poop');
+        var counter = $(this).attr('data-todo');
+        var key = $(this).attr('data-key');
+        console.log('COUNTER: #' + counter + key);
+        $('#' + counter).remove();
+        $('attr' + key).remove();
+
     });
 });
 // setInterval(repeatMe, 10000);
