@@ -45,8 +45,6 @@ var displayTime = function () {
     $('tbody').empty();
     database.ref().on("child_added", function (childSnapshot) {
         
-        var child = childSnapshot.val();
-        childKey = Object.keys(child);
 
         // First Time (pushed back 1 year to make sure it comes before current time)
         var firstTimeConverted = moment(childSnapshot.val().firstTrainTime, "hh:mm").subtract(1, "years");
@@ -74,6 +72,8 @@ var displayTime = function () {
         var nextTrainTimeCell = $('<td>').text(nextTrainTime);
         var tMinutesTillTrainCell = $('<td>').text(tMinutesTillTrain);
         var todoClose = $("<button>");
+        var child = childSnapshot.val();
+        childKey = Object.keys(childSnapshot.val());
         todoClose.attr("data-todo", todoCount);
         todoClose.attr("data-key", childKey);
         todoClose.addClass("checkbox");
@@ -128,7 +128,7 @@ $(document).on('ready', function () {
         var key = $(this).attr('data-key');
         console.log('COUNTER: #' + counter + key);
         $('#' + counter).remove();
-        $('attr' + key).remove();
+        $('attr' + key).remove(); 
 
     });
 });
