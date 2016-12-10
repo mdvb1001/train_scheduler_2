@@ -52,5 +52,8 @@ body {
 }
 
 .delete-button{
-    margin-top: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    display: block;
 } 
