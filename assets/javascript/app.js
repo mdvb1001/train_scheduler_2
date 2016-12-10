@@ -71,38 +71,41 @@ var displayTime = function () {
         var firstTrainTimeCell = $('<td>').text(childSnapshot.val().firstTrainTime);
         var nextTrainTimeCell = $('<td>').text(nextTrainTime);
         var tMinutesTillTrainCell = $('<td>').text(tMinutesTillTrain);
-        var todoClose = $("<button>");
-        var child = childSnapshot.val();
-        childKey = Object.keys(childSnapshot.val());
-        todoClose.attr("data-todo", todoCount);
-        todoClose.attr("data-key", childKey);
-        todoClose.addClass("checkbox");
-        todoClose.append("X");
+                    // var todoClose = $("<button>");
+                    // var child = childSnapshot.val();
+                    // childKey = Object.keys(childSnapshot.val());
+                    // todoClose.attr("data-todo", todoCount);
+                    // todoClose.attr("data-key", childKey);
+                    // todoClose.addClass("checkbox");
+                    // todoClose.append("X");
         
+        var train = childSnapshot.val();
+        train.id  = childSnapshot.key;
+        var deleteButton = $('<button>');
+        deleteButton.attr('data-todo', todoCount);
+        deleteButton.data('train-id', train.id);
+        deleteButton.addClass('delete-button');
+        deleteButton.append('X');
+
+
+
         todoCount++;
-        tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell).append(todoClose);
+        tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell).append(deleteButton);
         $('tbody').append(tableRow);
-        // Prevent Form from Refreshing (return false)
+        
         
     });
 };
 $(document).on('ready', function () {
     displayTime();
-    // displayTime();
-    //     setInterval(function () {
-    //         $('tbody').empty(), 5000
-    //     });
     setInterval(displayTime, 60000);
     $('#submit').on('click', function () {
         if ($('.form-horizontal').get(0).checkValidity()) {
-            console.log('valid');
             name = $('#inputName').val().trim();
             destination = $('#inputDestination').val().trim();
-            // firstTrainTime = $('#inputFirstTime').val().trim();
             firstTrainHour = $('#inputHour').val();
             firstTrainMinute = $('#inputMinute').val();
             firstTrainTime = firstTrainHour + ":" + firstTrainMinute;
-            console.log(firstTrainTime);
             frequency = $('#inputFrequency').val().trim();
             database.ref().push({
                 name: name,
@@ -118,15 +121,16 @@ $(document).on('ready', function () {
             $('#inputMinute').val('');
             $('#inputFrequency').val('');
             return false;
+            // Prevents Form from Refreshing (return false)
         }
     });
     console.log('check');
-    $(document).on('click', '.checkbox', function () {
+    $(document).on('click', '.delete-button', function () {
         console.log('poop');
         var counter = $(this).attr('data-todo');
-        var key = $(this).attr('data-key');
         console.log('COUNTER: #' + counter);
+        var id = $(this).data('train-id');
+        database.ref().child(id).remove();
         $('#' + counter).remove();
     });
 });
-// setInterval(repeatMe, 10000);
