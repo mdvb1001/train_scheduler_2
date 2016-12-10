@@ -50,3 +50,7 @@ body {
 .panel-heading {
     background: rgba(10, 10, 70, .55);
 }
+
+.delete-button{
+    margin-top: 5px;
+} 

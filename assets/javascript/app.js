@@ -78,14 +78,12 @@ var displayTime = function () {
         todoClose.attr("data-key", childKey);
         todoClose.addClass("checkbox");
         todoClose.append("X");
-        // Append the button to the todoitem
-        // Add the button and todo item to the todos div
-        // Add to the todoCount
+        
         todoCount++;
         tableRow.append(nameCell).append(destinationCell).append(frequencyCell).append(firstTrainTimeCell).append(nextTrainTimeCell).append(tMinutesTillTrainCell).append(todoClose);
         $('tbody').append(tableRow);
         // Prevent Form from Refreshing (return false)
-        return false;
+        
     });
 };
 $(document).on('ready', function () {
@@ -119,6 +117,7 @@ $(document).on('ready', function () {
             $('#inputHour').val('');
             $('#inputMinute').val('');
             $('#inputFrequency').val('');
+            return false;
         }
     });
     console.log('check');
@@ -126,10 +125,8 @@ $(document).on('ready', function () {
         console.log('poop');
         var counter = $(this).attr('data-todo');
         var key = $(this).attr('data-key');
-        console.log('COUNTER: #' + counter + key);
+        console.log('COUNTER: #' + counter);
         $('#' + counter).remove();
-        $('attr' + key).remove(); 
-
     });
 });
 // setInterval(repeatMe, 10000);
